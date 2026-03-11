@@ -52,7 +52,6 @@ exports.getAllProductsWithFilter = (0, error_1.TryCatch)(async (req, res, next) 
         baseQuery.price = {
             $lte: Number(price),
         };
-    console.log("baseQuery===>", baseQuery.price);
     if (category)
         baseQuery.category = category;
     const products = await fetchAllProducts();

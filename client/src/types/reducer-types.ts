@@ -10,8 +10,13 @@ export interface CartReducerInitialState {
     cartItems: CartItem[];
     subtotal: number;
     tax: number;
-    shippingCharges: number;
+    totalMsrp: number;
     discount: number;
     total: number;
     shippingInfo: ShippingInfo;
+    totalItemsInCart: number;
   }
+
+export interface CartState {
+  cartItems: CartItem[];
+}

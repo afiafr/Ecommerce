@@ -75,7 +75,7 @@ export const getAllProductsWithFilter = TryCatch(
 			baseQuery.price = {
 				$lte: Number(price),
 			};
-		console.log("baseQuery===>", baseQuery.price);
+
 
 		if (category) baseQuery.category = category;
 		const products = await fetchAllProducts();

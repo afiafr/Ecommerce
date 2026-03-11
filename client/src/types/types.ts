@@ -11,11 +11,12 @@ export type User = {
 export type Product = {
 	name: string;
 	price: number;
+    msrp: number;
 	stock: number;
 	group: "Laptop" | "Mobile" | "Tablet" | "Accessory";
 	photo: string;
     status: "Available" | "Unavailable";
-	_id: string;
+	id: string;
 };
 export type ShippingInfo = {
 	address: string;
@@ -27,11 +28,12 @@ export type ShippingInfo = {
 
 export type CartItem = {
 	productId: string;
-	photo: string;
 	name: string;
 	price: number;
+    msrp: number;
 	quantity: number;
 	stock: number;
+    group: "Laptop" | "Mobile" | "Tablet" | "Accessory";
 };
 export type OrderItem = Omit<CartItem, "stock"> & { _id: string };
 export type Order = {

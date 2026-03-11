@@ -5,9 +5,9 @@ import {
 } from "../redux/api/productApi";
 import type { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
-import { server } from "../redux/store";
+import { server, type RootState } from "../redux/store";
 import type { CartItem } from "../types/types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { FaLaptop, FaMobileAlt, FaTabletAlt } from "react-icons/fa";
 import { MdHeadphonesBattery } from "react-icons/md";
@@ -17,7 +17,8 @@ const ShopPage: React.FC = () => {
 	const [maxPrice, setMaxPrice] = useState(100000);
 	const [category, setCategory] = useState("");
 	const [page, setPage] = useState(1);
-
+    const { cartItems } =
+            useSelector((state: RootState) => state.cartReducer);
 	const dispatch = useDispatch();
 
 	const {
@@ -42,7 +43,7 @@ const ShopPage: React.FC = () => {
 
 	const isPrevPage = page > 1;
 
-	const isNextPage = page < searchedData!.totalPage;
+	const isNextPage = page < (searchedData ? searchedData.totalPage : 4);
 
 	if (isError) {
 		const err = error as CustomError;
@@ -54,12 +55,12 @@ const ShopPage: React.FC = () => {
         //@ts-ignore
 		toast.error(err.data);
 	}
-    console.log(searchedData);
+
 	const addToCartHandler = (cartItem: CartItem) => {
-		if (cartItem.stock < 1) return toast.error("Out of Stock");
 		dispatch(addToCart(cartItem));
 		toast.success("Added to Cart");
 	};
+
 	return (
 		<div className="flex mt-16">
 			<div className="w-3/12">
@@ -135,7 +136,7 @@ const ShopPage: React.FC = () => {
 						{searchedData && searchedData.products ? (
 							searchedData.products.map((product) => (
 								<div
-									key={product._id}
+									key={product.id}
 									className="bg-white p-4 rounded-md shadow-md "
 								>
 									{product.group === "Laptop" ? (
@@ -157,17 +158,18 @@ const ShopPage: React.FC = () => {
                                         disabled={product.status === "Unavailable"}
 										onClick={() =>
 											addToCartHandler({
-												productId: product._id,
+												productId: product.id,
 												price: product.price,
 												name: product.name,
-												photo: product.photo,
 												stock: product.stock,
-												quantity: 1,
+												quantity: (cartItems.find((item) => item.productId === product.id)?.quantity || 0) + 1,
+                                                group: product.group,
+                                                msrp: product.msrp,
 											})
 										}
-										className="bg-blue-500 text-white px-3 py-2 rounded-md mt-2 "
+										className={`px-3 py-2 rounded-md mt-2 ${product.status === "Unavailable" ? "cursor-not-allowed opacity-50" : "bg-blue-500 text-white hover:bg-blue-700"}`}
 									>
-										Add to Cart
+										{product.status === "Available" ? "Add to Cart" : "Out of Stock"}
 									</button>
 								</div>
 							))

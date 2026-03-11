@@ -16,7 +16,6 @@ exports.getAllOrders = (0, error_1.TryCatch)(async (req, res) => {
 });
 exports.makeNewOrder = (0, error_1.TryCatch)(async (req, res, next) => {
     const { orderItems, user, subtotal, tax, shippingCharges, discount, total } = req.body;
-    console.log("req.body===>", req.body);
     if (!orderItems || !subtotal || !tax || !discount || !total) {
         return next(new utils_class_1.default("Please add all fields", 400));
     }

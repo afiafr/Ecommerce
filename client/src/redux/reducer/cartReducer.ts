@@ -7,9 +7,10 @@ const initialState: CartReducerInitialState = {
 	cartItems: [],
 	subtotal: 0,
 	tax: 0,
-	shippingCharges: 0,
+	totalMsrp: 0,
 	discount: 0,
 	total: 0,
+	totalItemsInCart: 0,
 	shippingInfo: {
 		address: "",
 		city: "",
@@ -31,31 +32,34 @@ export const cartReducer = createSlice({
 
 			if (index !== -1) state.cartItems[index] = action.payload;
 			else state.cartItems.push(action.payload);
+            state.totalItemsInCart = state.cartItems.reduce((total, item) => total + item.quantity, 0);
 			state.loading = false;
 		},
 
 		removeCartItem: (state, action: PayloadAction<string>) => {
 			state.loading = true;
-			state.cartItems = state.cartItems.filter(
-				(i) => i.productId !== action.payload
+			const index = state.cartItems.findIndex(
+				(i) => i.productId === action.payload
 			);
+			if (index !== -1) state.cartItems.splice(index, 1);
+            state.totalItemsInCart = state.cartItems.reduce((total, item) => total + item.quantity, 0);
 			state.loading = false;
 		},
 
 		calculatePrice: (state) => {
 			const subtotal = state.cartItems.reduce(
-				(total, item) => total + item.price * item.quantity,
+				(total, item) => total + item.msrp * item.quantity,
 				0
 			);
 
-			state.subtotal = subtotal;
-			state.shippingCharges = state.subtotal > 1000 ? 0 : 200;
-			state.tax = Math.round(state.subtotal * 0.18);
+			state.totalMsrp = subtotal;
+			state.subtotal = state.cartItems.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+            );
+            state.discount = Number((state.totalMsrp - state.subtotal).toFixed(2));
 			state.total =
-				state.subtotal +
-				state.tax +
-				state.shippingCharges -
-				state.discount;
+				state.subtotal;
 		},
 
 		discountApplied: (state, action: PayloadAction<number>) => {
@@ -66,6 +70,14 @@ export const cartReducer = createSlice({
 		},
 
 		resetCart: () => initialState,
+
+        getCartItemsFromLocalStorage: (state) => {
+            const cartItems = localStorage.getItem("cartItems");
+            if (cartItems) {
+                state.cartItems = JSON.parse(cartItems);
+                state.totalItemsInCart = state.cartItems.reduce((total, item) => total + item.quantity, 0);
+            }
+        }
 	},
 });
 
@@ -76,4 +88,5 @@ export const {
 	discountApplied,
 	saveShippingInfo,
 	resetCart,
+    getCartItemsFromLocalStorage,
 } = cartReducer.actions;

@@ -5,7 +5,8 @@ import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
 import { Badge } from "antd";
 
 const Menu = () => {
-	const { cartItems } = useSelector((state: RootState) => state.cartReducer);
+	const { cartItems, totalItemsInCart } = useSelector((state: RootState) => state.cartReducer);
+
 	return (
 		<nav className="bg-blue-500 p-4  w-full z-10 pb-5 ">
 			<div className="container mx-auto flex justify-between items-center">
@@ -21,8 +22,8 @@ const Menu = () => {
 						>
 							<Badge
 								count={
-									cartItems?.length >= 1
-										? cartItems.length
+									totalItemsInCart >= 1
+										? totalItemsInCart
 										: 0
 								}
 								showZero={true}

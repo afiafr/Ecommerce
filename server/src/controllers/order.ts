@@ -13,7 +13,7 @@ export const getAllOrders = TryCatch(async (req: Request, res: Response) => {
 
 export const makeNewOrder = TryCatch(async (req: Request, res: Response, next: NextFunction) => {
     const { orderItems, user, subtotal, tax, shippingCharges, discount, total } = req.body;
-    console.log("req.body===>", req.body);
+
     if (!orderItems || !subtotal || !tax || !discount || !total) {
         return next(new ErrorHandler("Please add all fields", 400));
     }

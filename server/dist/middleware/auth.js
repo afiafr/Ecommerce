@@ -36,7 +36,6 @@ const isAdmin = async (req, res, next) => {
         next();
     }
     catch (err) {
-        console.log(err);
         return next(new utils_class_1.default("Something went wrong", 500));
     }
 };

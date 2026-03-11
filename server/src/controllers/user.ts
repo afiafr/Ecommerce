@@ -16,7 +16,7 @@ export const register = async (
 	next: NextFunction
 ) => {
 	const { name, email, phone, password } = req.body;
-	console.log("req.body===>", req.body);
+
 	if (!name || !email || !phone) {
 		return next(new ErrorHandler("Please add all fileds", 400));
 	}

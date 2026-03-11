@@ -16,7 +16,7 @@ const hashPassword = async (password) => {
 };
 const register = async (req, res, next) => {
     const { name, email, phone, password } = req.body;
-    console.log("req.body===>", req.body);
+
     if (!name || !email || !phone) {
         return next(new utils_class_1.default("Please add all fileds", 400));
     }

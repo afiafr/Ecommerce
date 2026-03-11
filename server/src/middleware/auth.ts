@@ -49,7 +49,6 @@ export const isAdmin = async (
 
     next();
   } catch (err) {
-    console.log(err);
     return next(new ErrorHandler("Something went wrong", 500));
   }
 };
