@@ -5,7 +5,7 @@ const mongoUri = () => {
     if (!MONGO_USERNAME || !MONGO_PASSWORD || !MONGO_DBNAME) {
         console.log("Error in connection database");
     }
-    const uri = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.7y4kgmx.mongodb.net/${MONGO_DBNAME}?retryWrites=true&w=majority`;
+    const uri = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.7y4kgmx.mongodb.net/?appName=${MONGO_DBNAME}`; //&retryWrites=true&w=majority
     return uri;
 };
 exports.default = mongoUri;

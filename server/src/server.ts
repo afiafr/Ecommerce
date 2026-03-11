@@ -5,7 +5,11 @@ import dotenv from 'dotenv'
 import mongoUri from './config/connectDB.js';
 import mongoose from 'mongoose'
 import { S3Client } from '@aws-sdk/client-s3'
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/user.js';
+import productRoutes from './routes/product.js';
+import orderRoutes from './routes/order.js';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app = express();
 
@@ -18,18 +22,22 @@ app.get("/server-health", (req: Request, res: Response) => {
     })
 })
 
+app.use(cookieParser());
 const mongoConnectionUri = mongoUri();
 mongoose.connect(mongoConnectionUri)
 .then(() => {
     console.log("Connected to database")
 }).catch((error) => {
-    console.error("Error in connecting database")
+    console.error("Error in connecting database", error)
 })
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/products", productRoutes)
+app.use("/api/v1/orders", orderRoutes)
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
