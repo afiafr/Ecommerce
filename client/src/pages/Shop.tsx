@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
 	useCategoriesQuery,
 	useSearchProductsQuery,
 } from "../redux/api/productApi";
 import type { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
-import { server, type RootState } from "../redux/store";
+import { type RootState } from "../redux/store";
 import type { CartItem } from "../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { FaLaptop, FaMobileAlt, FaTabletAlt } from "react-icons/fa";
 import { MdHeadphonesBattery } from "react-icons/md";
+import InputRange from "react-input-range";
+
 const ShopPage: React.FC = () => {
 	const [search, setSearch] = useState("");
 	const [sort, setSort] = useState("");
 	const [maxPrice, setMaxPrice] = useState(100000);
 	const [category, setCategory] = useState("");
 	const [page, setPage] = useState(1);
-    const { cartItems } =
-            useSelector((state: RootState) => state.cartReducer);
+	const { cartItems } = useSelector((state: RootState) => state.cartReducer);
 	const dispatch = useDispatch();
 
 	const {
@@ -47,12 +48,12 @@ const ShopPage: React.FC = () => {
 
 	if (isError) {
 		const err = error as CustomError;
-        //@ts-ignore
+		//@ts-expect-error
 		toast.error(err.data);
 	}
 	if (productIsError) {
 		const err = productError as CustomError;
-        //@ts-ignore
+		//@ts-expect-error
 		toast.error(err.data);
 	}
 
@@ -105,7 +106,7 @@ const ShopPage: React.FC = () => {
 							<span>Max Price:{maxPrice || ""}</span>
 							<input
 								type="range"
-								min={100}
+								min={0}
 								max={10000}
 								value={maxPrice}
 								onChange={(e) =>
@@ -113,7 +114,6 @@ const ShopPage: React.FC = () => {
 								}
 								className="flex-1"
 							/>
-							<span>${maxPrice}</span>
 						</div>
 					</div>
 				</div>
@@ -140,36 +140,51 @@ const ShopPage: React.FC = () => {
 									className="bg-white p-4 rounded-md shadow-md "
 								>
 									{product.group === "Laptop" ? (
-                                        <FaLaptop className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
-                                    ) : product.group === "Mobile" ? (
-                                        <FaMobileAlt  className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
-                                    ) : product.group === "Tablet" ? (
-                                        <FaTabletAlt className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
-                                    ) : (
-                                        <MdHeadphonesBattery className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
-                                    )}
+										<FaLaptop className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
+									) : product.group === "Mobile" ? (
+										<FaMobileAlt className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
+									) : product.group === "Tablet" ? (
+										<FaTabletAlt className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
+									) : (
+										<MdHeadphonesBattery className="text-4xl text-gray-400 mb-2 items-center justify-self-center" />
+									)}
 									<h3 className="text-lg font-semibold mb-2">
 										{product.name}
 									</h3>
 									<p className="text-gray-600">
-										Price: ${product.price}
+										Category: {product.group}
+									</p>
+									<p className="text-gray-600">
+										MSRP Price: ${product.msrp}
+									</p>
+									<p className="text-gray-600">
+										Sale Price: ${product.price}
 									</p>
 									<button
-                                        disabled={product.status === "Unavailable"}
+										disabled={
+											product.status === "Unavailable"
+										}
 										onClick={() =>
 											addToCartHandler({
 												productId: product.id,
 												price: product.price,
 												name: product.name,
 												stock: product.stock,
-												quantity: (cartItems.find((item) => item.productId === product.id)?.quantity || 0) + 1,
-                                                group: product.group,
-                                                msrp: product.msrp,
+												quantity:
+													(cartItems.find(
+														(item) =>
+															item.productId ===
+															product.id
+													)?.quantity || 0) + 1,
+												group: product.group,
+												msrp: product.msrp,
 											})
 										}
 										className={`px-3 py-2 rounded-md mt-2 ${product.status === "Unavailable" ? "cursor-not-allowed opacity-50" : "bg-blue-500 text-white hover:bg-blue-700"}`}
 									>
-										{product.status === "Available" ? "Add to Cart" : "Out of Stock"}
+										{product.status === "Available"
+											? "Add to Cart"
+											: "Out of Stock"}
 									</button>
 								</div>
 							))

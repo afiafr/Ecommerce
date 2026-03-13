@@ -1,55 +1,58 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-export interface IUser extends Document{
-    _id:string,
-    name: string,
-    email:string,
-    password:string,
-    photo:string,
-    role:"user" |"admin",
-    phone: string,
-    address: string,
-    createdAt: Date,
-    updatedAt: Date,
-    isBanned: boolean
+export interface IUser extends Document {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  photo: string;
+  role: "user" | "admin";
+  phone: string;
+  address: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isBanned: boolean;
 }
 
-const schema = new mongoose.Schema({
-    name:{
-        type: String,
-        required:[true,"Name is required"]
+const schema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
     },
-    email:{
-        type: String,
-        required:[true, "Email is required"],
-        unique: true
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
     },
-    phone:{
-        type:String,
-        required:[true, "Phone is required"]
+    phone: {
+      type: String,
+      required: [true, "Phone is required"],
     },
-    password:{
-        type:String,
-        required: true,
-        min:6,
-        max:64
+    password: {
+      type: String,
+      required: true,
+      min: 6,
+      max: 64,
     },
-    address:{
-        type:String,
-        trim: true
+    address: {
+      type: String,
+      trim: true,
     },
-    photo:{
-        type: String
+    photo: {
+      type: String,
     },
-    role:{
-        type: String,
-        enum:["user","admin"],
-        default:"user"
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
-    isBanned:{
-        type:Boolean,
-        default:false
-    }
-},{timestamps: true})
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true },
+);
 
-export const User = mongoose.model<IUser>("User", schema)
+export const User = mongoose.model<IUser>("User", schema);

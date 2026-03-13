@@ -3,13 +3,14 @@ import jwt from "jsonwebtoken";
 import ErrorHandler from "../utils/utils-class";
 import { User } from "../models/user";
 interface AuthenticatedRequest extends Request {
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   user?: any;
 }
 
 export const requireSignIn = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const token = req.cookies.jwt;
 
@@ -22,17 +23,17 @@ export const requireSignIn = async (
       userId: string;
     };
     req.user = await User.findById(decoded.userId).select("-password"); //logged in user
-    next();
-  } catch (err) {
+    next(); //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(401);
-    return next(new ErrorHandler("Authentication failed", 401));
+    return next(new ErrorHandler(err, 401));
   }
 };
 
 export const isAdmin = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = await User.findById(req.user?._id);
@@ -43,12 +44,12 @@ export const isAdmin = async (
 
     if (user.role !== "admin") {
       return next(
-        new ErrorHandler("Authentication failed, Need admin access", 401)
+        new ErrorHandler("Authentication failed, Need admin access", 401),
       );
     }
 
     next();
   } catch (err) {
-    return next(new ErrorHandler("Something went wrong", 500));
+    return next(new ErrorHandler("Something went wrong" + err, 500));
   }
 };

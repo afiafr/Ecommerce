@@ -5,7 +5,7 @@ import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
 import { Badge } from "antd";
 
 const Menu = () => {
-	const { cartItems, totalItemsInCart } = useSelector((state: RootState) => state.cartReducer);
+	const { totalItemsInCart } = useSelector((state: RootState) => state.cartReducer);
 
 	return (
 		<nav className="bg-blue-500 p-4  w-full z-10 pb-5 ">

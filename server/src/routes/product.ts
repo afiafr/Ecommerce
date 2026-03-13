@@ -1,6 +1,10 @@
 import express from "express";
-import { isAdmin, requireSignIn } from "../middleware/auth";
-import { getAllCategories, getAllProducts, getAllProductsWithFilter, getProductByStatus, getSingleProduct } from "../controllers/product";
+import {
+  getAllCategories,
+  getAllProductsWithFilter,
+  getProductByStatus,
+  getSingleProduct,
+} from "../controllers/product";
 
 const router = express.Router();
 

@@ -186,9 +186,6 @@
     "@aws-sdk/client-s3": "^3.1005.0",
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
-    "@types/node": "^25.4.0",
-    "autoprefixer": "^10.4.27",
-    "postcss": "^8.5.8",
-    "tailwindcss": "^3.4.19"
+    "@types/node": "^25.4.0"
   }
 }

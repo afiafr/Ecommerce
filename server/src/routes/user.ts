@@ -1,5 +1,14 @@
 import express from "express";
-import { deleteUser, getAllUsers, getUserProfile, login, logout, register, singleUser, updateUser } from "../controllers/user.js";
+import {
+  deleteUser,
+  getAllUsers,
+  getUserProfile,
+  login,
+  logout,
+  register,
+  singleUser,
+  updateUser,
+} from "../controllers/user.js";
 import { requireSignIn, isAdmin } from "../middleware/auth.js";
 
 const routes = express.Router();

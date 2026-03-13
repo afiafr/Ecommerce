@@ -1,18 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TryCatch = exports.errorMiddleware = void 0;
-const errorMiddleware = (err, req, res, next) => {
-    err.statusCode ||= 500;
-    err.message ||= "Internal Server Error";
-    if (err.name === "CastError")
-        err.message = "Invalid ID";
-    return res.status(err.statusCode).json({
-        success: false,
-        message: err.message
-    });
+const errorMiddleware = (err, req, res) => {
+  err.statusCode ||= 500;
+  err.message ||= "Internal Server Error";
+  if (err.name === "CastError") err.message = "Invalid ID";
+  return res.status(err.statusCode).json({
+    success: false,
+    message: err.message,
+  });
 };
 exports.errorMiddleware = errorMiddleware;
 const TryCatch = (func) => (req, res, next) => {
-    return Promise.resolve(func(req, res, next)).catch(next);
+  return Promise.resolve(func(req, res, next)).catch(next);
 };
 exports.TryCatch = TryCatch;

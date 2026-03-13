@@ -13,7 +13,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const CartPage = () => {
-	const { cartItems, subtotal, tax, total, discount } =
+	const { cartItems, totalMsrp, tax, total, discount } =
 		useSelector((state: RootState) => state.cartReducer);
 	const dispatch = useDispatch();
 
@@ -58,10 +58,10 @@ const CartPage = () => {
 			cancel();
 			setIsValidCouponCode(false);
 		};
-	}, [couponCode]);
+	}, [couponCode, dispatch]);
 	useEffect(() => {
 		dispatch(calculatePrice());
-	}, [cartItems]);
+	}, [cartItems, dispatch]);
 
 	return (
 		<div className="h-screen bg-gray-100 pt-20">
@@ -96,7 +96,7 @@ const CartPage = () => {
 				<div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
 					<div className="mb-2 flex justify-between">
 						<p className="text-gray-700">Subtotal</p>
-						<p className="text-gray-700">${subtotal}</p>
+						<p className="text-gray-700">${totalMsrp}</p>
 					</div>
 					<div className="flex justify-between">
 						<p className="text-gray-700">Tax</p>

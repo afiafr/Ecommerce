@@ -52,14 +52,14 @@ export const cartReducer = createSlice({
 				0
 			);
 
-			state.totalMsrp = subtotal;
-			state.subtotal = state.cartItems.reduce(
+			state.totalMsrp = Number(subtotal.toFixed(2));
+			state.subtotal = Number(state.cartItems.reduce(
                 (total, item) => total + item.price * item.quantity,
                 0
-            );
+            ).toFixed(2));
             state.discount = Number((state.totalMsrp - state.subtotal).toFixed(2));
 			state.total =
-				state.subtotal;
+				Number(state.subtotal.toFixed(2));
 		},
 
 		discountApplied: (state, action: PayloadAction<number>) => {

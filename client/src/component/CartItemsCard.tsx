@@ -1,6 +1,5 @@
 import { AiFillDelete } from "react-icons/ai";
 import type { CartItem } from "../types/types";
-import { server } from "../redux/store";
 import { FaLaptop, FaMobileAlt, FaTabletAlt } from "react-icons/fa";
 import { MdHeadphonesBattery } from "react-icons/md";
 import React from "react";
